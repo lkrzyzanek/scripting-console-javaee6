@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Scripting Console</title>
+	<style type="text/css">
+		textarea {
+			width: 100%;
+			height: 200px;
+		}
+
+		.output {
+			font-family: monospace;
+		}
+		.error {
+			color: red;
+		}
+	</style>
+</h:head>
+<h:body>
+	<h1>Scripting Console</h1>
+
+	<h:form id="scriptconsole-form">
+		<h:inputTextarea id="script" value="#{scriptConsoleController.script}" required="true"/>
+		<h:message for="script" styleClass="error" />
+		<br/>
+		<br/>
+		<h:outputLabel value="Language: " for="language"/>
+		<h:selectOneMenu id="language" value="#{scriptConsoleController.language}">
+			<f:selectItems value="#{scriptConsoleController.languages}"/>
+		</h:selectOneMenu>
+
+		<h:outputLabel value="Separate thread: " for="thread"/>
+		<h:selectOneMenu id="thread" value="#{scriptConsoleController.separateThread}">
+			<f:selectItem itemValue="true" itemLabel="Yes"/>
+			<f:selectItem itemValue="false" itemLabel="No"/>
+		</h:selectOneMenu>
+		<br/>
+		<h:commandButton value="#{scriptConsoleController.running?'Running':'Execute'}"
+						 action="#{scriptConsoleController.execute}"
+						 disabled="#{scriptConsoleController.running}"/>
+		<br/>
+		<h2>Output</h2>
+		<hr/>
+
+		<pre class="output">
+			<h:outputText value="#{scriptConsoleController.result}"/>
+		</pre>
+
+		<hr/>
+		<ui:fragment rendered="#{scriptConsoleController.startDate != null}">
+			Start: <h:outputText value="#{scriptConsoleController.startDate}"/><br/>
+			Finish: <h:outputText value="#{scriptConsoleController.finishDate}"/><br/>
+			Execution Time: <h:outputText value="#{scriptConsoleController.executionTimeInSec}"/> sec
+		</ui:fragment>
+
+	</h:form>
+
+</h:body>
+</html>
